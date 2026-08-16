@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MagButton from './MagButton';
+import useTilt from '../hooks/useTilt';
 import aditya from '../assets/aditya.jpg';
 
 const SERVICES = [
@@ -11,6 +12,8 @@ const SERVICES = [
 
 export default function Hero() {
   const panelRef = useRef(null);
+  const tilt = useTilt(5);
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const rows = panelRef.current?.querySelectorAll('.status-row');
@@ -18,6 +21,16 @@ export default function Hero() {
     rows.forEach((row, i) => {
       row.style.setProperty('--d', `${i * 120 + 250}ms`);
     });
+  }, []);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      setVerified(true);
+      return;
+    }
+    const t = setTimeout(() => setVerified(true), 1500);
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -30,11 +43,13 @@ export default function Hero() {
             <br />
             of a system <span className="hl">most people</span>
             <br />
-            never see.
+            never see.<span className="cursor" aria-hidden="true" />
           </h1>
           <p className="hero-sub">
-            I&rsquo;m Aditya Raorane — I build encrypted networks, database middleware, and
-            anomaly detection, then wire AI in only where it actually earns its place.
+            I&rsquo;m Aditya Raorane. Most of my work never has a UI — it&rsquo;s the encrypted
+            pipe, the middleware, the model quietly deciding something looks wrong before a
+            human would notice. I build the load-bearing parts, then bring in AI only where
+            it earns its keep.
           </p>
           <div className="hero-actions">
             <MagButton href="#work" className="btn-ink">
@@ -47,16 +62,22 @@ export default function Hero() {
         </div>
 
         <div className="hero-side">
-          <div className="profile-card">
+          <div
+            className="profile-card"
+            ref={tilt.ref}
+            onMouseMove={tilt.onMouseMove}
+            onMouseLeave={tilt.onMouseLeave}
+          >
             <div className="profile-head">
               <span>OPERATOR</span>
-              <span className="status-live">
+              <span className={`status-live ${verified ? 'is-online' : 'is-checking'}`}>
                 <span className="live-dot" />
-                ONLINE
+                {verified ? 'ONLINE' : 'VERIFYING'}
               </span>
             </div>
-            <div className="profile-photo-wrap">
+            <div className={`profile-photo-wrap ${verified ? '' : 'is-scanning'}`}>
               <img src={aditya} alt="Aditya Raorane" className="profile-photo" />
+              <span className="scan-line" />
               <span className="profile-corner tl" />
               <span className="profile-corner tr" />
               <span className="profile-corner bl" />
