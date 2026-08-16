@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import MagButton from './MagButton';
+import aditya from '../assets/aditya.jpg';
 
 const SERVICES = [
   { name: 'MeshLink', status: 'Encrypting every hop', color: 'var(--cyan)' },
@@ -45,24 +46,47 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="status-panel" ref={panelRef}>
-          <div className="status-head">
-            <span>SYSTEM STATUS</span>
-            <span className="status-live">
-              <span className="live-dot" />
-              LIVE
-            </span>
-          </div>
-          {SERVICES.map((s) => (
-            <a href="#work" className="status-row" key={s.name} style={{ '--accent': s.color }}>
-              <span className="status-indicator">
-                <span className="ping" />
-                <span className="dot" />
+        <div className="hero-side">
+          <div className="profile-card">
+            <div className="profile-head">
+              <span>OPERATOR</span>
+              <span className="status-live">
+                <span className="live-dot" />
+                ONLINE
               </span>
-              <span className="status-name">{s.name}</span>
-              <span className="status-text">{s.status}</span>
-            </a>
-          ))}
+            </div>
+            <div className="profile-photo-wrap">
+              <img src={aditya} alt="Aditya Raorane" className="profile-photo" />
+              <span className="profile-corner tl" />
+              <span className="profile-corner tr" />
+              <span className="profile-corner bl" />
+              <span className="profile-corner br" />
+            </div>
+            <div className="profile-meta">
+              <span className="profile-name">Aditya Raorane</span>
+              <span className="profile-role">Systems &amp; AI Engineer</span>
+            </div>
+          </div>
+
+          <div className="status-panel" ref={panelRef}>
+            <div className="status-head">
+              <span>SYSTEM STATUS</span>
+              <span className="status-live">
+                <span className="live-dot" />
+                LIVE
+              </span>
+            </div>
+            {SERVICES.map((s) => (
+              <a href="#work" className="status-row" key={s.name} style={{ '--accent': s.color }}>
+                <span className="status-indicator">
+                  <span className="ping" />
+                  <span className="dot" />
+                </span>
+                <span className="status-name">{s.name}</span>
+                <span className="status-text">{s.status}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
